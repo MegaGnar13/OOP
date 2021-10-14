@@ -3,8 +3,10 @@
 using namespace std;
 
 
-int count_1 = 1;
+
 unsigned int func(int n) {
+
+	int count_1 = 1;
 	
 	if (n <= 1)
 		return 1;
