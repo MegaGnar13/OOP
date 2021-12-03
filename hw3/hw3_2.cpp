@@ -95,7 +95,7 @@ Order::Order(string id, string oname) {
 Order::Order(string id, Beverage* omenu) {
 	orderID = id;
 	orderName = omenu->getDescription();
-	orderCost = omenu->cost();
+	orderCost = omenu->money;
 }
 Order::~Order() {
 
@@ -153,21 +153,21 @@ int OrderProcessing::addOrder(Order newOrder) {
 		OrderCnt++;
 		front = rear = 0;
 		orderQueue[rear] = newOrder;
-		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' <<" with cost $"<<newOrder.getCost() <<" Total orders so far : " << OrderCnt << endl;
+		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' << " with cost $" << newOrder.getCost() << " Total orders so far : " << OrderCnt << endl;
 		return 1;
 	}
 	else if (rear == maxNumOrder - 1 && front != 0) {
 		OrderCnt++;
 		rear = 0;
 		orderQueue[rear] = newOrder;
-		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' <<" with cost $"<< newOrder.getCost() <<" Total orders so far : " << OrderCnt << endl;
+		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' << " with cost $" << newOrder.getCost() << " Total orders so far : " << OrderCnt << endl;
 		return 1;
 	}
 	else {
 		OrderCnt++;
 		rear++;
 		orderQueue[rear] = newOrder;
-		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' <<" with cost $"<< newOrder.getCost() <<" Total orders so far : " << OrderCnt << endl;
+		cout << '[' << newOrder.getOrderInfo() << ']' << " is ordered by " << '[' << newOrder.getOrderID() << ']' << " with cost $" << newOrder.getCost() << " Total orders so far : " << OrderCnt << endl;
 		return 1;
 	}
 }
@@ -232,35 +232,57 @@ OrderProcessing* CoffeeShop::getOrderProcessingHandler() {
 
 }
 
-
 int main() {
-
 	Beverage* beverage1;
-	beverage1 = new Espresso();
-	beverage1 = new Mocha(beverage1);
-	beverage1 = new Mocha(beverage1);
-	//cout << "Total cost: " << beverage1->cost() << endl;
+	beverage1 = new Espresso(); //1.99
+	//beverage1 = new Mocha((Beverage*)beverage1); //0.20
+	beverage1 = new Mocha(beverage1); //0.20
+	//cout << ((Mocha*)beverage1)->getDescription() << endl;
 	//cout << beverage1->getDescription() << endl;
-	
+	//beverage1 = new Mocha((Beverage*)beverage1);  //0.20
+	beverage1 = new Mocha(beverage1);  //0.20
+	cout << "Total cost: " << beverage1->cost() << endl;
+	cout << beverage1->getDescription() << endl;
+
+
 	Beverage* beverage2;
-	beverage2 = new HouseBlend();
-	beverage2 = new Mocha(beverage2);
-	beverage2 = new Whip(beverage2);
-	//cout << "Total cost: " << beverage2->cost() << endl;
-	//cout << beverage2->getDescription() << endl;
+	beverage2 = new HouseBlend(); //0.89	
+	beverage2 = new Mocha(beverage2); //0.20
+	beverage2 = new Whip(beverage2);  //0.45
+	cout << "Total cost: " << beverage2->cost() << endl;
+	cout << beverage2->getDescription() << endl;
+
+	Beverage* beverage3;
+	beverage3 = new HouseBlend(); //0.89	
+	beverage3 = new Whip(beverage3); //0.45
+	beverage3 = new Whip(beverage3);  //0.45
+	cout << "Total cost: " << beverage3->cost() << endl;
+	cout << beverage3->getDescription() << endl;
+
+	Beverage* beverage4;
+	beverage4 = new Espresso(); //1.99
+	beverage4 = new Mocha(beverage4); //0.20	
+	beverage4 = new Mocha(beverage4);  //0.20
+	beverage4 = new Whip(beverage4);  //0.45
+	beverage4 = new Whip(beverage4);  //0.45
+	cout << "Total cost: " << beverage4->cost() << endl;
+	cout << beverage4->getDescription() << endl;
 
 	CoffeeShop starbugs(5);
-	Order o1("Alice", beverage1), o2("Bob", beverage2);
+	Order o1("Alice", beverage1), o2("Bob", beverage2), o3("David", beverage3), o4("Brown", beverage4);
+
 	starbugs.getOrderProcessingHandler()->addOrder(o1);
 	starbugs.getOrderProcessingHandler()->addOrder(o2);
+	starbugs.getOrderProcessingHandler()->addOrder(o3);
+	starbugs.getOrderProcessingHandler()->addOrder(o4);
+
+	starbugs.getOrderProcessingHandler()->serveOrder();
+	starbugs.getOrderProcessingHandler()->serveOrder();
 	starbugs.getOrderProcessingHandler()->serveOrder();
 	starbugs.getOrderProcessingHandler()->serveOrder();
 	starbugs.getOrderProcessingHandler()->serveOrder();
 
-
-	delete beverage1, beverage2;
-
-	
+	delete beverage1, beverage2, beverage3, beverage4;
 
 	return 0;
 }
